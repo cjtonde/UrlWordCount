@@ -8,11 +8,11 @@ import java.util.Map;
  */
 public interface WordCountDao {
     /**
-     * Insert word and count Hashmap into word count table.
+     * Insert word and count HashMap into word count table.
      *
      * @param urlId      URL id.
-     * @param countWords HasMap containing word and count.
+     * @param countWords HashMap containing word and count.
      * @throws SQLException
      */
-    void createWordCount(int urlId, Map<String, Integer> countWords) throws SQLException;
+    void createWordCount(RdbDao dao, int urlId, Map<String, Integer> countWords) throws SQLException;
 }

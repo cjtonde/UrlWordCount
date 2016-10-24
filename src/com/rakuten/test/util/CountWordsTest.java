@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by chetantonde on 10/22/16.
@@ -16,12 +17,26 @@ import static junit.framework.TestCase.assertEquals;
 public class CountWordsTest {
     @Test
     public void countWordsTest() throws IOException {
-        String text = "one two two. three three. three";
-        Map<String, Integer> result = new HashMap<String, Integer>();
-        result.put("one", 1);
-        result.put("two", 2);
-        result.put("three", 3);
-        assertEquals(result, CountWords.countWords(text));
+        {
+            String text = "one two two. three three. three";
+            Map<String, Integer> result = new HashMap<String, Integer>();
+            result.put("one", 1);
+            result.put("two", 2);
+            result.put("three", 3);
+            assertEquals(result, CountWords.countWords(text));
+        }
+        
+        {
+            String text = "one";
+            Map<String, Integer> result = new HashMap<String, Integer>();
+            result.put("one", 1);
+            assertEquals(result, CountWords.countWords(text));
+        }
+        
+        {
+            String text = "";
+            assertTrue(CountWords.countWords(text).isEmpty());
+        }
     }
     
 }

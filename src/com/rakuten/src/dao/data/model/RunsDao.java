@@ -14,5 +14,5 @@ public interface RunsDao {
      * @return Return urlid created for the run.
      * @throws SQLException
      */
-    int createRun(String url) throws SQLException;
+    int createRun(RdbDao dao, String url) throws SQLException;
 }

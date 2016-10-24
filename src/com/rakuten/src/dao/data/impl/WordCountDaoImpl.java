@@ -1,8 +1,11 @@
 package com.rakuten.src.dao.data.impl;
 
+import com.rakuten.src.dao.data.model.RdbDao;
 import com.rakuten.src.dao.data.model.WordCountDao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 /**
@@ -10,23 +13,14 @@ import java.util.Map;
  */
 
 public class WordCountDaoImpl implements WordCountDao {
-    private static String userName;
-    private static String password;
-    private static String jdbcUrl;
     
     private static final String DB_WORD_COUNT_TABLE_NAME = "wordcount";
     
-    public WordCountDaoImpl(String _username, String _password, String _url) {
-        userName = _username;
-        password = _password;
-        jdbcUrl = _url;
-    }
-    
-    public void createWordCount(int urlId, Map<String, Integer> countWords) throws SQLException {
+    public void createWordCount(RdbDao dao, int urlId, Map<String, Integer> countWords) throws SQLException {
         Connection con = null;
         Statement stmt = null;
         try {
-            con = DriverManager.getConnection(jdbcUrl, userName, password);
+            con = dao.getRdbConnection();
             stmt = con.createStatement();
             
             for (Map.Entry<String, Integer> entry : countWords.entrySet()) {

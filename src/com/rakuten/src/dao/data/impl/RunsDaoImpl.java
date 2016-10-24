@@ -1,12 +1,17 @@
 package com.rakuten.src.dao.data.impl;
 
+import com.rakuten.src.dao.data.model.RdbDao;
 import com.rakuten.src.dao.data.model.RunsDao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by chetantonde on 10/22/16.
  */
+
 public class RunsDaoImpl implements RunsDao {
     
     private static String userName;
@@ -14,27 +19,20 @@ public class RunsDaoImpl implements RunsDao {
     private static String jdbcUrl;
     private static final String DB_RUNS_TABLENAME = "runs";
     
-    public RunsDaoImpl(String _username, String _password, String _url) {
-        userName = _username;
-        password = _password;
-        jdbcUrl = _url;
-    }
-    
-    public int createRun(String url) throws SQLException {
+    public int createRun(RdbDao dao, String url) throws SQLException {
         Connection con = null;
         Statement stmt = null;
         ResultSet rs;
         int autoIncKeyFromApi = -1;
-        
         try {
-            con = DriverManager.getConnection(jdbcUrl, userName, password);
-            stmt = con.createStatement();
+            con = dao.getRdbConnection();
             String query = "INSERT INTO " + DB_RUNS_TABLENAME + "(urlname) VALUES('" + url + "')";
+            stmt = con.createStatement();
             stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             
             rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                autoIncKeyFromApi = rs.getInt(1);
+                autoIncKeyFromApi = rs.getInt(1);   // get urlid generated for the inserted record.
             } else {
                 throw new RuntimeException("Row not inserted!");
             }
@@ -48,4 +46,5 @@ public class RunsDaoImpl implements RunsDao {
         }
         return autoIncKeyFromApi;
     }
+    
 }
